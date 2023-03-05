@@ -6,9 +6,8 @@ import ModuloEstadistica
 
 def Bienvenida():
     print("\n¡Bienvenido al Juego de las Adivinanzas!\n")
-    inicio = input("Pulse ENTER para iniciar")
-    return inicio
-
+    input("Pulse ENTER para iniciar")
+    
 
 def MenuPrincipal():
     print("\nMenu")
@@ -40,27 +39,28 @@ def OpcionesMenu(opcion):
         dificultad = Control(1,4)
         Dificultad(dificultad,opcion)
     elif opcion == 3:
-        ModuloEstadistica.Estadistica()
+        MenuEstadistica()
+        estadistica = Control(1,2)
+        Estadistica(estadistica)
 
 
 def Dificultad(dificultad, modo):
     if dificultad == 1:
         numero = Numero(modo)
         print("\nTiene 20 intentos para adivinar el número entre 1 y 1000")
-        Adivina(numero,20)
+        Adivina(numero,21)
     elif dificultad == 2:
         numero = Numero(modo)
         print("\nTiene 12 intentos para adivinar el número entre 1 y 1000")
-        Adivina(numero,12)    
+        Adivina(numero,13)    
     elif dificultad == 3:
         numero = Numero(modo)
         print("\nTiene 5 intentos para adivinar el número entre 1 y 1000")
-        Adivina(numero,5)
+        Adivina(numero,6)
     else: 
         numero = Numero(modo)
         intentos_totales = DificultadMisterio(numero)
         Adivina(numero,intentos_totales)
-        
         
 
 def Numero(modo):
@@ -73,27 +73,26 @@ def Numero(modo):
     return numero
 
 
-
-def Adivina(numero,intentos_totales):
-
-    jugador = int(input("\nAdivine el numero entre 1 y 1000: "))
-            
+def Adivina(numero,intentos_totales):            
     i = intentos_totales - 1
 
-    while (i in range(1,intentos_totales) and jugador != numero):
+    while i in range(1,intentos_totales):
+        jugador = int(input("\nAdivine el numero entre 1 y 1000: "))
+
+        i = i - 1
+
         if jugador > numero:
             print("El número buscado es menor.")
         elif jugador < numero:
             print("El número buscado es mayor.")
+        elif jugador == numero:
+            print("\n¡Ha ganado el juego en " + str(intentos_totales-i-1) + " intentos!")
+            break 
                 
-        jugador = int(input("Adivine el numero: "))
-        i = i - 1
-                
-        if jugador == numero:
-            print("\n¡Ha ganado el juego en " + str(intentos_totales-i) + " intentos!")    
-        elif i == 0:
+        if i == 0:
             print("\nHa perdido el juego")
-    
+            break 
+                
     ModuloEstadistica.Resultados(i, intentos_totales)
 
 
@@ -108,13 +107,16 @@ def DificultadMisterio(numero):
     print("\nTiene " + str(intentos_totales) + " intentos para adivinar el número entre 1 y 1000")
 
     return intentos_totales
-    
-    
 
 
-        
+def MenuEstadistica():
+    print("\nEstadísticas")
+    print("1. Cantidad de partidas ganadas y perdidas")
+    print("2. Intentos utilizados")
 
 
-
-            
-
+def Estadistica(estadistica):
+    if estadistica == 1:
+        ModuloEstadistica.GanadosPerdidos()
+    else:
+        ModuloEstadistica.Intentos()
